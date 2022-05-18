@@ -1,6 +1,6 @@
-# Contributing to Openverse
+# Contributing to fauxpenverse
 
-Thank you for your interest in contributing to Openverse! This document is
+Thank you for your interest in contributing to fauxpenverse! This document is
 a set of guidelines to help you contribute to this project.
 
 ## Code of Conduct
@@ -17,4 +17,4 @@ you'd like to see documented.
 
 ## Questions or Thoughts?
 
-Feel free to [join us on Slack](https://make.wordpress.org/chat/) and discuss the project with the engineers and community members on #openverse. We also use [GitHub discussions](https://github.com/WordPress/openverse-api/discussions) for feature requests, troubleshooting, and other 'off-topic' conversations.
+Feel free to [join us on Slack](https://make.wordpress.org/chat/) and discuss the project with the engineers and community members on #fauxpenverse. We also use [GitHub discussions](https://github.com/zackkrida/fauxpenverse-api/discussions) for feature requests, troubleshooting, and other 'off-topic' conversations.

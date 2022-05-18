@@ -1,4 +1,4 @@
-# Openverse Catalog
+# fauxpenverse Catalog
 
 This repository contains the methods used to identify over 1.4 billion Creative
 Commons licensed works. The challenge is that these works are dispersed
@@ -25,7 +25,7 @@ The data is available in three file formats:
 For more information about these formats, please see the
 [Common Crawl documentation][ccrawl_doc].
 
-Openverse Catalog uses AWS Data Pipeline service to automatically create an Amazon EMR
+fauxpenverse Catalog uses AWS Data Pipeline service to automatically create an Amazon EMR
 cluster of 100 c4.8xlarge instances that will parse the WAT archives to identify
 all domains that link to creativecommons.org. Due to the volume of data, Apache
 Spark is used to streamline the processing. The output of this methodology is a
@@ -59,10 +59,10 @@ Our API-based workflows run at different schedules: some daily, others monthly. 
 Workflows that have a `schedule_string='@daily'` parameter are run daily. The DAG
 workflows run `provider_api_scripts` to load and extract media data from the APIs. The following provider scripts are run daily:
 
-- [Flickr](openverse_catalog/dags/providers/provider_api_scripts/flickr.py)
-- [Met Museum](openverse_catalog/dags/providers/provider_api_scripts/metropolitan_museum_of_art.py)
-- [PhyloPic](openverse_catalog/dags/providers/provider_api_scripts/phylopic.py)
-- [Wikimedia Commons](openverse_catalog/dags/providers/provider_api_scripts/wikimedia_commons.py)
+- [Flickr](fauxpenverse_catalog/dags/providers/provider_api_scripts/flickr.py)
+- [Met Museum](fauxpenverse_catalog/dags/providers/provider_api_scripts/metropolitan_museum_of_art.py)
+- [PhyloPic](fauxpenverse_catalog/dags/providers/provider_api_scripts/phylopic.py)
+- [Wikimedia Commons](fauxpenverse_catalog/dags/providers/provider_api_scripts/wikimedia_commons.py)
 
 #### Monthly
 
@@ -71,12 +71,12 @@ month at 16:00 UTC. These workflows are reserved for long-running jobs or
 APIs that do not have date filtering capabilities, so the data is reprocessed
 monthly to keep the catalog updated. The following provider scripts are run monthly:
 
-- [Brooklyn Museum](openverse_catalog/dags/providers/provider_api_scripts/brooklyn_museum.py)
-- [Cleveland Museum of Art](openverse_catalog/dags/providers/provider_api_scripts/cleveland_museum_of_art.py)
-- [Common Crawl Syncer](openverse_catalog/dags/commoncrawl/commoncrawl_scripts/commoncrawl_s3_syncer/SyncImageProviders.py)
-- [NYPL](openverse_catalog/dags/providers/provider_api_scripts/nypl.py)
-- [RawPixel](openverse_catalog/dags/providers/provider_api_scripts/raw_pixel.py)
-- [StockSnap](openverse_catalog/dags/providers/provider_api_scripts/stocksnap.py)
+- [Brooklyn Museum](fauxpenverse_catalog/dags/providers/provider_api_scripts/brooklyn_museum.py)
+- [Cleveland Museum of Art](fauxpenverse_catalog/dags/providers/provider_api_scripts/cleveland_museum_of_art.py)
+- [Common Crawl Syncer](fauxpenverse_catalog/dags/commoncrawl/commoncrawl_scripts/commoncrawl_s3_syncer/SyncImageProviders.py)
+- [NYPL](fauxpenverse_catalog/dags/providers/provider_api_scripts/nypl.py)
+- [RawPixel](fauxpenverse_catalog/dags/providers/provider_api_scripts/raw_pixel.py)
+- [StockSnap](fauxpenverse_catalog/dags/providers/provider_api_scripts/stocksnap.py)
 
 ### TSV to Postgres Loader
 
@@ -84,23 +84,23 @@ The Airflow DAG defined in [`loader_workflow.py`][db_loader] runs every minute,
 and loads the oldest file which has not been modified in the last 15 minutes
 into the upstream database. It includes some data preprocessing steps.
 
-[db_loader]: openverse_catalog/dags/database/loader_workflow.py
+[db_loader]: fauxpenverse_catalog/dags/database/loader_workflow.py
 
 See each provider API script's notes in their respective [handbook][ov-handbook] entry.
 
-[ov-handbook]: https://make.wordpress.org/openverse/handbook/openverse-handbook/
+[ov-handbook]: https://make.wordpress.org/fauxpenverse/handbook/fauxpenverse-handbook/
 
 ## Development setup for Airflow and API puller scripts
 
 There are a number of scripts in the directory
-[`openverse_catalog/dags/provider_api_scripts`][api_scripts] eventually
-loaded into a database to be indexed for searching in the Openverse API. These run in a
+[`fauxpenverse_catalog/dags/provider_api_scripts`][api_scripts] eventually
+loaded into a database to be indexed for searching in the fauxpenverse API. These run in a
 different environment than the PySpark portion of the project, and so have their
 own dependency requirements.
 
 For instructions geared specifically towards production deployments, see [DEPLOY.md](DEPLOY.md).
 
-[api_scripts]: openverse_catalog/dags/providers/provider_api_scripts
+[api_scripts]: fauxpenverse_catalog/dags/providers/provider_api_scripts
 
 ### Requirements
 
@@ -137,6 +137,7 @@ just dotenv
 This will generate a `.env` file which is used by the containers.
 
 The `.env` file is split into four sections:
+
 1. Airflow Settings - these can be used to tweak various Airflow properties
 2. API Keys - set these if you intend to test one of the provider APIs referenced
 3. Connection/Variable info - this will not likely need to be modified for local development, though the values will need to be changed in production
@@ -147,7 +148,7 @@ The `.env` file does not need to be modified if you only want to run the tests.
 ### Running & Testing
 
 There is a [`docker-compose.yml`][dockercompose] provided in the
-[`openverse_catalog`][cc_airflow] directory, so from that directory, run
+[`fauxpenverse_catalog`][cc_airflow] directory, so from that directory, run
 
 ```shell
 just up
@@ -155,21 +156,21 @@ just up
 
 This results, among other things, in the following running containers:
 
-- `openverse_catalog_webserver_1`
-- `openverse_catalog_postgres_1`
-- `openverse_catalog_s3_1`
+- `fauxpenverse_catalog_webserver_1`
+- `fauxpenverse_catalog_postgres_1`
+- `fauxpenverse_catalog_s3_1`
 
 and some networking setup so that they can communicate. Note:
 
-- `openverse_catalog_webserver_1` is running the Apache Airflow daemon, and also
+- `fauxpenverse_catalog_webserver_1` is running the Apache Airflow daemon, and also
   has a few development tools (e.g., `pytest`) installed.
-- `openverse_catalog_postgres_1` is running PostgreSQL, and is setup with some
+- `fauxpenverse_catalog_postgres_1` is running PostgreSQL, and is setup with some
   databases and tables to emulate the production environment. It also provides a
   database for Airflow to store its running state.
 - The directory containing all modules files (including DAGs, dependencies, and other
-  tooling) will be mounted to the directory `/usr/local/airflow/openverse_catalog`
-  in the container `openverse_catalog_webserver_1`. On production, only the DAGs folder
-  will be mounted, e.g. `/usr/local/airflow/openverse_catalog/dags`.
+  tooling) will be mounted to the directory `/usr/local/airflow/fauxpenverse_catalog`
+  in the container `fauxpenverse_catalog_webserver_1`. On production, only the DAGs folder
+  will be mounted, e.g. `/usr/local/airflow/fauxpenverse_catalog/dags`.
 
 The various services can be accessed using these links:
 
@@ -222,7 +223,7 @@ To reset the test DB (wiping out all databases, schemata, and tables), run
 just down -v
 ```
 
-`docker volume prune` can also be useful if you've already stopped the running containers, but be warned that it will remove all volumes associated with stopped containers, not just openverse-catalog ones.
+`docker volume prune` can also be useful if you've already stopped the running containers, but be warned that it will remove all volumes associated with stopped containers, not just fauxpenverse-catalog ones.
 
 To fully recreate everything from the ground up, you can use:
 
@@ -232,18 +233,18 @@ just recreate
 
 [justfile]: justfile
 [dockercompose]: docker-compose.yml
-[cc_airflow]: openverse_catalog/
+[cc_airflow]: fauxpenverse_catalog/
 
 ## Directory Structure
 
 ```text
-openverse-catalog
+fauxpenverse-catalog
 ├── .github/                                # Templates for GitHub
 ├── archive/                                # Files related to the previous CommonCrawl parsing implementation
 ├── docker/                                 # Dockerfiles and supporting files
 │   ├── airflow/                            #   - Docker image for Airflow server and workers
 │   └── local_postgres/                     #   - Docker image for development Postgres database
-├── openverse_catalog/                      # Primary code directory
+├── fauxpenverse_catalog/                      # Primary code directory
 │   ├── dags/                               # DAGs & DAG support code
 │   │   ├── common/                         #   - Shared modules used across DAGs
 │   │   ├── commoncrawl/                    #   - DAGs & scripts for commoncrawl parsing
@@ -260,16 +261,16 @@ openverse-catalog
 
 ## Publishing
 
-The docker image for the catalog (Airflow) is published to ghcr.io/WordPress/openverse-catalog.
+The docker image for the catalog (Airflow) is published to ghcr.io/WordPress/fauxpenverse-catalog.
 
 ## Contributing
 
 Pull requests are welcome! Feel free to [join us on Slack][wp_slack] and discuss the
-project with the engineers and community memebers on #openverse.
+project with the engineers and community memebers on #fauxpenverse.
 
 ## Acknowledgments
 
-Openverse, previously known as CC Search, was conceived and built at [Creative Commons](https://creativecommons.org). We thank them for their commitment to open source and openly licensed content, with particular thanks to previous team members @ryanmerkley, @janetpkr, @lizadaly, @sebworks, @pa-w, @kgodey, @annatuma, @mathemancer, @aldenstpage, @brenoferreira, and @sclachar, along with their [community of volunteers](https://opensource.creativecommons.org/community/community-team/).
+fauxpenverse, previously known as CC Search, was conceived and built at [Creative Commons](https://creativecommons.org). We thank them for their commitment to open source and openly licensed content, with particular thanks to previous team members @ryanmerkley, @janetpkr, @lizadaly, @sebworks, @pa-w, @kgodey, @annatuma, @mathemancer, @aldenstpage, @brenoferreira, and @sclachar, along with their [community of volunteers](https://opensource.creativecommons.org/community/community-team/).
 
 ## License
 

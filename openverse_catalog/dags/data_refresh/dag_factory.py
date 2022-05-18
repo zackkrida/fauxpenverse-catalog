@@ -14,12 +14,12 @@ be run with the `force_refresh_metrics` option to run this refresh after the fir
 of the month.
 
 Once this step is complete, the data refresh can be initiated. A data refresh
-occurs on the data refresh server in the openverse-api project. This is a task
+occurs on the data refresh server in the fauxpenverse-api project. This is a task
 which imports data from the upstream Catalog database into the API, copies contents
 to a new Elasticsearch index, and finally makes the index "live". This process is
 necessary to make new content added to the Catalog by our provider DAGs available
 to the API. You can read more in the [README](
-https://github.com/WordPress/openverse-api/blob/main/ingestion_server/README.md
+https://github.com/zackkrida/fauxpenverse-api/blob/main/ingestion_server/README.md
 ) Importantly, the data refresh TaskGroup is also configured to handle concurrency
 requirements of the data refresh server.
 
@@ -27,9 +27,9 @@ You can find more background information on this process in the following
 issues and related PRs:
 
 - [[Feature] Data refresh orchestration DAG](
-https://github.com/WordPress/openverse-catalog/issues/353)
+https://github.com/zackkrida/fauxpenverse-catalog/issues/353)
 - [[Feature] Merge popularity calculations and data refresh into a single DAG](
-https://github.com/WordPress/openverse-catalog/issues/453)
+https://github.com/zackkrida/fauxpenverse-catalog/issues/453)
 """
 import logging
 from typing import Sequence

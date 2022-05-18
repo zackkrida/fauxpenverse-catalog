@@ -74,7 +74,7 @@ logger = logging.getLogger(__name__)
 
 DB_CONN_ID = os.getenv("OPENLEDGER_CONN_ID", "postgres_openledger_testing")
 AWS_CONN_ID = os.getenv("AWS_CONN_ID", "no_aws_conn_id")
-OPENVERSE_BUCKET = os.getenv("OPENVERSE_BUCKET")
+fauxpenverse_BUCKET = os.getenv("fauxpenverse_BUCKET")
 OUTPUT_DIR_PATH = os.path.realpath(os.getenv("OUTPUT_DIR", "/tmp/"))
 DATE_RANGE_ARG_TEMPLATE = "{{{{ macros.ds_add(ds, -{}) }}}}"
 
@@ -90,7 +90,7 @@ def _push_output_paths_wrapper(
     for each media store to XComs. Output locations are pushed under keys with
     the format `<media-type>_tsv`. This is a temporary workaround due to the nature
     of the current provider scripts. Once
-    https://github.com/WordPress/openverse-catalog/issues/229 is addressed and the
+    https://github.com/zackkrida/fauxpenverse-catalog/issues/229 is addressed and the
     provider scripts are refactored into classes, this wrapper can either be updated
     or the XCom pushing can be moved into the provider initialization.
     """
@@ -239,7 +239,7 @@ def create_provider_api_workflow(
                         "tsv_file_path": XCOM_PULL_TEMPLATE.format(
                             pull_data.task_id, f"{media_type}_tsv"
                         ),
-                        "s3_bucket": OPENVERSE_BUCKET,
+                        "s3_bucket": fauxpenverse_BUCKET,
                         "s3_prefix": f"{media_type}/{provider_name}",
                         "aws_conn_id": AWS_CONN_ID,
                     },
@@ -249,7 +249,7 @@ def create_provider_api_workflow(
                     task_id="load_from_s3",
                     python_callable=loader.load_from_s3,
                     op_kwargs={
-                        "bucket": OPENVERSE_BUCKET,
+                        "bucket": fauxpenverse_BUCKET,
                         "key": XCOM_PULL_TEMPLATE.format(copy_to_s3.task_id, "s3_key"),
                         "postgres_conn_id": DB_CONN_ID,
                         "media_type": media_type,

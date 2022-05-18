@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from openverse_catalog.templates import create_api_script
+from fauxpenverse_catalog.templates import create_api_script
 
 
 def test_files_created():

@@ -15,7 +15,7 @@ ENV PIP_NO_COLOR=1
 
 # Airflow/workflow configuration
 ENV OUTPUT_DIR=/var/workflow_output/
-ENV AIRFLOW__CORE__DAGS_FOLDER=${AIRFLOW_HOME}/openverse_catalog/dags
+ENV AIRFLOW__CORE__DAGS_FOLDER=${AIRFLOW_HOME}/fauxpenverse_catalog/dags
 ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
 ENV AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
 ENV AIRFLOW__CORE__ENABLE_XCOM_PICKLING=True
@@ -23,7 +23,7 @@ ENV AIRFLOW__CORE__ENABLE_XCOM_PICKLING=True
 # TODO: Test if moving this to .env changes anything!
 ENV AIRFLOW__LOGGING__REMOTE_LOGGING=True
 ENV AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID=aws_default
-ENV AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER=s3://openverse-airflow-logs
+ENV AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER=s3://fauxpenverse-airflow-logs
 
 
 RUN apt-get update && apt-get -yqq upgrade && apt-get -yqq install \

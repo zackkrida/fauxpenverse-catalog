@@ -82,7 +82,7 @@ def fill_template(provider, media_type):
     print(
         """
 NOTE: You will also need to add the Airflow workflow file to the WORKFLOWS list in the \
-DAG parsing test file (openverse-catalog/tests/dags/test_dag_parsing.py).
+DAG parsing test file (fauxpenverse-catalog/tests/dags/test_dag_parsing.py).
 """
     )
 

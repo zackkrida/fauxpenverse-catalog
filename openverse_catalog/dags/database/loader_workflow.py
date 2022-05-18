@@ -60,7 +60,7 @@ from common.loader import loader, paths, sql
 DAG_ID = "tsv_to_postgres_loader"
 DB_CONN_ID = os.getenv("OPENLEDGER_CONN_ID", "postgres_openledger_testing")
 AWS_CONN_ID = os.getenv("AWS_CONN_ID", "no_aws_conn_id")
-OPENVERSE_BUCKET = os.getenv("OPENVERSE_BUCKET")
+fauxpenverse_BUCKET = os.getenv("fauxpenverse_BUCKET")
 MINIMUM_FILE_AGE_MINUTES = int(os.getenv("LOADER_FILE_AGE", 15))
 MAX_ACTIVE_TASKS = 5
 TIMESTAMP_TEMPLATE = "{{ ts_nodash }}"
@@ -122,14 +122,14 @@ with dag:
         python_callable=loader.copy_to_s3,
         op_kwargs={
             "output_dir": OUTPUT_DIR_PATH,
-            "bucket": OPENVERSE_BUCKET,
+            "bucket": fauxpenverse_BUCKET,
             "aws_conn_id": AWS_CONN_ID,
             "identifier": TIMESTAMP_TEMPLATE,
         },
         doc_md=d(
             f"""
         Copy the TSV from the local output directory ({OUTPUT_DIR_PATH}) into the S3
-        bucket ({OPENVERSE_BUCKET}) for direct loading into the database.
+        bucket ({fauxpenverse_BUCKET}) for direct loading into the database.
         """
         ),
     )
@@ -137,7 +137,7 @@ with dag:
         task_id="load_s3_data",
         python_callable=loader.load_s3_data,
         op_kwargs={
-            "bucket": OPENVERSE_BUCKET,
+            "bucket": fauxpenverse_BUCKET,
             "aws_conn_id": AWS_CONN_ID,
             "postgres_conn_id": DB_CONN_ID,
             "identifier": TIMESTAMP_TEMPLATE,

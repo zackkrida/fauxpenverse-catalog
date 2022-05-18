@@ -48,7 +48,7 @@ def test_copy_file_to_s3_staging_uses_bucket_environ(monkeypatch, mock_s3_load_f
     staging_prefix = TEST_STAGING_PREFIX
     tsv_file_path = "/test/file/path/to/data.tsv"
     test_bucket_name = "test-bucket"
-    monkeypatch.setenv("OPENVERSE_BUCKET", test_bucket_name)
+    monkeypatch.setenv("fauxpenverse_BUCKET", test_bucket_name)
 
     s3.copy_file_to_s3_staging(
         identifier,

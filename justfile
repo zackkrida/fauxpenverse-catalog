@@ -78,7 +78,7 @@ shell: up
 ipython: (up "postgres s3")
     docker-compose {{ DOCKER_FILES }} run \
         --rm \
-        -w /usr/local/airflow/openverse_catalog/dags \
+        -w /usr/local/airflow/fauxpenverse_catalog/dags \
         -v {{ justfile_directory() }}/.ipython:/usr/local/airflow/.ipython:z \
         {{ SERVICE }} \
         /usr/local/airflow/.local/bin/ipython

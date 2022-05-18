@@ -11,7 +11,7 @@ function help_text() {
  \   / |    |    |  | |/    |    |  \ .   ) |
   `-'  '    `--' '  ' '     `--' '  '  `-'  `--'
 
-Docker entrypoint script for Openverse Airflow. Unless specified, all commands
+Docker entrypoint script for fauxpenverse Airflow. Unless specified, all commands
 will wait for the database to be ready and will upgrade the Airflow schema.
 
 Usage:

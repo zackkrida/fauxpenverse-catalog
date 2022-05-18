@@ -50,7 +50,7 @@ jobs:
         with:
           file: docker/airflow/Dockerfile
           push: false
-          tags: openverse-catalog
+          tags: fauxpenverse-catalog
           cache-from: type=gha,scope=catalog
           cache-to: type=gha,scope=catalog
           outputs: type=docker,dest=/tmp/catalog.tar
@@ -72,7 +72,7 @@ jobs:
       - uses: extractions/setup-just@v1
 
       - name: Change permissions for Docker steps
-        run: chmod -R 777 openverse_catalog/ tests/
+        run: chmod -R 777 fauxpenverse_catalog/ tests/
 
       - name: Test
         # The containers must be rebuilt here because we need the dev dependencies
@@ -107,10 +107,10 @@ jobs:
       - name: Load and tag image
         run: |
           docker load --input /tmp/catalog.tar
-          docker tag openverse-catalog \
-            ghcr.io/wordpress/openverse-catalog:latest
-          docker tag openverse-catalog \
-            ghcr.io/wordpress/openverse-catalog:${{ github.sha }}
-          docker tag openverse-catalog \
-            ghcr.io/wordpress/openverse-catalog:${{ github.ref_name }}
-          docker push --all-tags ghcr.io/wordpress/openverse-catalog
+          docker tag fauxpenverse-catalog \
+            ghcr.io/wordpress/fauxpenverse-catalog:latest
+          docker tag fauxpenverse-catalog \
+            ghcr.io/wordpress/fauxpenverse-catalog:${{ github.sha }}
+          docker tag fauxpenverse-catalog \
+            ghcr.io/wordpress/fauxpenverse-catalog:${{ github.ref_name }}
+          docker push --all-tags ghcr.io/wordpress/fauxpenverse-catalog

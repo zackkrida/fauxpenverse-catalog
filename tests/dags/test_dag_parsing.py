@@ -6,7 +6,7 @@ from airflow.models import DagBag
 
 # The path to DAGs *within the container*, though that should mirror the current
 # directory structure.
-DAG_FOLDER = Path(__file__).parents[2] / "openverse_catalog" / "dags"
+DAG_FOLDER = Path(__file__).parents[2] / "fauxpenverse_catalog" / "dags"
 
 # List of workflow files to test
 # NOTE: If you've added a new provider, add the workflow filename here
